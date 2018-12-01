@@ -1,0 +1,5 @@
+# 2018
+This year I will try to do the polyglot challenge.
+
+## Days:
+ - Day 1: Bash
