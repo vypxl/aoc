@@ -1,0 +1,9 @@
+#! /bin/bash
+if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
+    echo "Usage: gen <day> <ext> <interpreter for shebang>"
+else
+    fname="Day$1.$2"
+    echo -e "#! /usr/bin/env $3\n" > $fname
+    chmod +x $fname
+    ./getinput $1
+fi
