@@ -2,7 +2,7 @@
 
 # Part 1 - Just add them together with bc
 echo "Solution for part 1:"
-cat input1.txt | xargs | bc
+cat 1.in | xargs | bc
 
 
 # Part 2 - Put all new frequencies into an associative array until a duplicate is encountered
@@ -29,7 +29,7 @@ while true; do
             seen["$freq"]=1
         fi
         iters=$(($iters+1))
-    done < input1.txt
+    done < 1.in
 done
 
 # Solution 1: 445
