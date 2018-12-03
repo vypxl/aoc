@@ -4,4 +4,4 @@ This year I will try to do the polyglot challenge.
 ## Days:
  - Day 1: Bash
  - Day 2: Dart
- 
+ - Day 3: Julia
