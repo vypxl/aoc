@@ -7,3 +7,4 @@ This year I will try to do the polyglot challenge.
  - Day 3: Julia
  - Day 4: Java
  - Day 5: Awk
+ - Day 6: Go
