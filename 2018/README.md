@@ -8,3 +8,4 @@ This year I will try to do the polyglot challenge.
  - Day 4: Java
  - Day 5: Awk
  - Day 6: Go
+ - Day 7: Ruby
