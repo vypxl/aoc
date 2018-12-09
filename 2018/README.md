@@ -10,3 +10,4 @@ This year I will try to do the polyglot challenge.
  - Day 6: Go
  - Day 7: Ruby
  - Day 8: Nim
+ - Day 9: Lua
