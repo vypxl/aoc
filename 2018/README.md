@@ -12,3 +12,4 @@ This year I will try to do the polyglot challenge.
  - Day 8: Nim
  - Day 9: Lua
  - Day 10: C
+ - Day 11: Idris
