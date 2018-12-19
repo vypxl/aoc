@@ -1,0 +1,51 @@
+#ip 4
+addi 4 16 4 - goto init
+
+LABEL part1
+seti 1 9 3 - r3 = 1
+LABEL loop1
+seti 1 6 2 - r2 = 1
+LABEL loop2
+mulr 3 2 5 - r5 = r3 * r2
+
+eqrr 5 1 5 | 
+addr 5 4 4 | 
+addi 4 1 4 | 
+addr 3 0 0 - if r5 > r1 then r0 += r3
+
+addi 2 1 2 |
+gtrr 2 1 5 |
+addr 4 5 4 |
+seti 2 9 4 | if r2 <= r1 then goto loop2 
+
+addi 3 1 3 |
+gtrr 3 1 5 |
+addr 5 4 4 |
+seti 1 0 4 - if r3 <= r1 then goto loop1
+
+mulr 4 4 4 - halt
+
+LABEL init
+addi 1 2 1  |
+mulr 1 1 1  |
+mulr 4 1 1  |
+muli 1 11 1 - r1 = 836
+
+addi 5 1 5  | 
+mulr 5 4 5  |
+addi 5 2 5  - r5 = 24
+addr 1 5 1  - b += f
+
+addr 4 0 4  |
+seti 0 1 4  - if r0 == 1 then goto part2 else goto part1 (with b = 860)
+
+; part 2 - calling part1 with different number
+setr 4 3 5  |
+mulr 5 4 5  |
+addr 4 5 5  |
+mulr 4 5 5  |
+muli 5 14 5 |
+mulr 5 4 5  |
+addr 1 5 1  - b = 860 + (27 * 28 + 29) * 30 * 14 * 32
+seti 0 6 0  - a = 0; useless
+seti 0 7 4 - goto part1 with b = 10551260
