@@ -20,3 +20,4 @@ This year I will try to do the polyglot challenge.
  - Day 16: Haskell
  - Day 17: C#
  - Day 18: Pascal
+ - Day 19: Rust
