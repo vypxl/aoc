@@ -23,3 +23,4 @@ This year I will try to do the polyglot challenge.
  - Day 19: Rust
  - Day 20: D
  - Day 21: x64 Assembly
+ - Day 22: Elixir
