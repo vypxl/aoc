@@ -25,3 +25,4 @@ This year I will try to do the polyglot challenge.
  - Day 21: x64 Assembly
  - Day 22: Elixir
  - Day 23: OCaml
+ - Day 24: JavaScript
