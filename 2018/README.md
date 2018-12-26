@@ -1,5 +1,5 @@
 # 2018
-This year I will try to do the polyglot challenge.
+This year I ~~will try to do~~ **successfully completed** the polyglot challenge!
 
 ## Days:
  - Day 1: Bash
@@ -26,3 +26,4 @@ This year I will try to do the polyglot challenge.
  - Day 22: Elixir
  - Day 23: OCaml
  - Day 24: JavaScript
+ - Day 25: Python
