@@ -23,6 +23,7 @@ part2 :: [Integer] -> Integer
 part2 input = snd . head $ dropWhile ((/=19690720) . fst) [(run input n v, 100 * n + v) | v <- [0..99], n <- [0..99]]
 
 split :: String -> String -> [String]
+split _ "" = []
 split sep str = let (left, right) = splitAt (idx) str in left : split sep (drop (length sep) right)
         where idx = fromMaybe (length str) $ findIndex (isPrefixOf sep) (tails str)
 
