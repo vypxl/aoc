@@ -29,5 +29,6 @@ def call(f):
 def init(xs):
     return xs[:-1]
 
+lmap = compose(list, map)
 attr = curry(flip(getattr)) # pylint: disable=no-value-for-parameter
 mapattr = compose(map, attr)
