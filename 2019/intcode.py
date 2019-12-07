@@ -37,7 +37,7 @@ class IntComputer:
     async def __operate(self, op, p1 = None, p2 = None, p3 = None):
         """Execute the given instruction with the given parameters on the current memory"""
         if self.debug:
-            print(f"[{self.name}]: ${self.ip:03} {self.OPCODES[op][0].ljust(3)} {' '.join(map(self.__format_param, [p1, p2, p3]))}")
+            print(f"[{self.name}]: ${self.ip:04} {self.OPCODES[op][0].ljust(3)} {' '.join(map(self.__format_param, [p1, p2, p3]))}")
         def wr(p, v):
             a, _ = p
             self.mem[a] = v
@@ -146,3 +146,7 @@ class IntComputer:
         if debug:
             print(f"\nResult: {ret}\n")
         return ret
+
+# Used in:
+#  - Day 5
+#  - Day 7
