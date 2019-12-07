@@ -29,6 +29,18 @@ def call(f):
 def init(xs):
     return xs[:-1]
 
+async def qCollect(q):
+    xs = []
+    while not q.empty():
+        item = await q.get()
+        xs.append(item)
+    return xs
+
+async def qFill(q, xs):
+    for x in xs:
+        await q.put(x)
+    return q
+
 lmap = compose(list, map)
 attr = curry(flip(getattr)) # pylint: disable=no-value-for-parameter
 mapattr = compose(map, attr)
