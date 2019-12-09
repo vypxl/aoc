@@ -1,17 +1,19 @@
 import typing
 import asyncio as aio
+import numpy as np
 from util import (nums, lmap, qCollect, qFill)
 
 class IntComputer:
-    def __init__(self, program: str, stdin: aio.Queue, stdout: aio.Queue, *, name="", debug = False):
+    def __init__(self, program: str, stdin: aio.Queue, stdout: aio.Queue, *, memsize=8192, memdtype=object, name="", debug = False):
         """Create a computer that can run given program with input and output represented as asyncio.Queue 's. mame is used as a prefix for debug messages."""
         self.name = name
         self.debug = debug
         self.ip = 0
+        self.rel = 0
         self.stdin = stdin
         self.stdout = stdout
-        self.program = nums(program)
-        self.mem = self.program.copy()
+        self.program = np.array(nums(program), dtype=memdtype)
+        self.mem = np.zeros(memsize, dtype=memdtype)
 
     OPCODES = {
         1: ('add', 3),
@@ -22,6 +24,7 @@ class IntComputer:
         6: ('jz', 2),
         7: ('clt', 3),
         8: ('ceq', 3),
+        9: ('arb', 1),
         99: ('hlt', 0)
     }
 
@@ -30,21 +33,28 @@ class IntComputer:
         if p is None:
             return ""
         elif p[1] == 1:
-            return str(p[0]).ljust(5)
+            return str(p[0]).ljust(6)
+        elif p[1] == 2:
+            return f"%[{p[0]}]".ljust(6)
         else:
-            return f"[{p[0]}]".ljust(5)
+            return f"[{p[0]}]".ljust(6)
 
     async def __operate(self, op, p1 = None, p2 = None, p3 = None):
         """Execute the given instruction with the given parameters on the current memory"""
         if self.debug:
-            print(f"[{self.name}]: ${self.ip:04} {self.OPCODES[op][0].ljust(3)} {' '.join(map(self.__format_param, [p1, p2, p3]))}")
+            print(f"[{self.name}]: %{self.rel:04} ${self.ip:04} {self.OPCODES[op][0].ljust(3)} {' '.join(map(self.__format_param, [p1, p2, p3]))}")
         def wr(p, v):
-            a, _ = p
-            self.mem[a] = v
+            a, m = p
+            if m == 0:
+                self.mem[a] = v
+            if m == 2:
+                self.mem[self.rel + a] = v
         def rd(p):
             av, m = p
             if m == 0:
                 av = self.mem[av]
+            if m == 2:
+                av = self.mem[self.rel + av]
             return av
 
         if op == 1:
@@ -72,6 +82,8 @@ class IntComputer:
                 wr(p3, 1)
             else:
                 wr(p3, 0)
+        elif op == 9:
+            self.rel += rd(p1)
         elif op == 99:
             return -1
         
@@ -79,8 +91,10 @@ class IntComputer:
 
     async def run(self):
         """Start executing instructions until a hlt instruction"""
-        self.mem = self.program.copy()
+        self.mem.fill(0)
+        self.mem[:self.program.size] = self.program
         self.ip = 0
+        self.rel = 0
 
         while 1:
             op = self.mem[self.ip]
@@ -94,7 +108,7 @@ class IntComputer:
                 break
 
     @classmethod
-    def run_direct(cls, program, inp, debug=False):
+    def run_direct(cls, program, inp, name="direct execution", *, memsize=8192, memdtype=object, debug=False):
         """Execute a program with given input and return its output"""
         async def _run():
             stdin = aio.Queue()
@@ -102,7 +116,7 @@ class IntComputer:
 
             await aio.gather(
                 qFill(stdin, inp),
-                cls(program, stdin, stdout, name="direct execution", debug=debug).run()
+                cls(program, stdin, stdout, name=name, memsize=memsize, memdtype=memdtype, debug=debug).run()
             )
 
             return await qCollect(stdout)
@@ -150,3 +164,4 @@ class IntComputer:
 # Used in:
 #  - Day 5
 #  - Day 7
+#  - Day 9
