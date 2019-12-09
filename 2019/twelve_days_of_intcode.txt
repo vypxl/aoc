@@ -7,20 +7,20 @@ Topaz sent to me
 Two Multiplications, and
 An addition with three parameters.
 
-The second day of Christmas,
+The third day of Christmas,
 Topaz sent to me
 Three readings from input,
 Two Multiplications, and
 An addition with three parameters.
 
-The second day of Christmas,
+The fourth day of Christmas,
 Topaz sent to me
 Four letters to output,
 Three readings from input,
 Two Multiplications, and
 An addition with three parameters.
 
-The second day of Christmas,
+The fifth day of Christmas,
 Topaz sent to me
 Five uses of immediate values,
 Four letters to output,
@@ -28,7 +28,7 @@ Three readings from input,
 Two Multiplications, and
 An addition with three parameters.
 
-The second day of Christmas,
+The sixth day of Christmas,
 Topaz sent to me
 Six jumps on true values,
 Five uses of immediate values,
@@ -37,7 +37,7 @@ Three readings from input,
 Two Multiplications, and
 An addition with three parameters.
 
-The second day of Christmas,
+The seventh day of Christmas,
 Topaz sent to me
 Seven bounces on false believes,
 Six jumps on true values,
@@ -47,7 +47,7 @@ Three readings from input,
 Two Multiplications, and
 An addition with three parameters.
 
-The second day of Christmas,
+The eighth day of Christmas,
 Topaz sent to me
 Eight comparisons with lesser or equal things,
 Seven bounces on false believes,
@@ -58,7 +58,7 @@ Three readings from input,
 Two Multiplications, and
 An addition with three parameters.
 
-The second day of Christmas,
+The nineth day of Christmas,
 Topaz sent to me
 Nine tests for equality,
 Eight comparisons with lesser things,
@@ -70,7 +70,7 @@ Three readings from input,
 Two Multiplications, and
 An addition with three parameters.
 
-The second day of Christmas,
+The tenth day of Christmas,
 Topaz sent to me
 Ten relatives I did not know before,
 Nine tests for equality,
@@ -83,7 +83,7 @@ Three readings from input,
 Two Multiplications, and
 An addition with three parameters.
 
-The second day of Christmas,
+The eleventh day of Christmas,
 Topaz sent to me
 Eleven adjustments to known relations,
 Ten relatives I did not know before,
@@ -97,7 +97,7 @@ Three readings from input,
 Two Multiplications, and
 An addition with three parameters.
 
-The second day of Christmas,
+The tvelfth day of Christmas,
 Topaz sent to me
 Twelve halt instructions,
 Eleven adjustments to known relations,
