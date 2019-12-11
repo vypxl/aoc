@@ -5,11 +5,12 @@ import numpy as np
 from intcode import IntComputer
 
 PRINT_ASM = False
-
+GRIDSIZE = 512
+GRIDMID = GRIDSIZE // 2
 
 def bothParts(inp, debug=False):
-    grid = np.zeros((512, 512), dtype=np.int8)
-    rX, rY, rA = 256, 256, 0
+    grid = np.zeros((GRIDSIZE, GRIDSIZE), dtype=np.int8)
+    rX, rY, rA = GRIDMID, GRIDMID, 0
     readingColor = True
 
     seen = set()
@@ -40,8 +41,8 @@ def bothParts(inp, debug=False):
     ### Part 2
 
     grid.fill(0)
-    grid[256, 256] = 1
-    rX, rY, rA = 256, 256, (-np.pi / 2)
+    grid[GRIDMID, GRIDMID] = 1
+    rX, rY, rA = GRIDMID, GRIDMID, (-np.pi / 2)
     readingColor = True
 
     robot.run()
