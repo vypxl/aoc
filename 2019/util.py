@@ -1,16 +1,17 @@
+from os.path import basename
+import re
 # pylint: disable=unused-wildcard-import
 from toolz.curried import *
-import re
 import __main__ as mainmodule
 
 def get_day():
-    return re.findall(r"\d+", mainmodule.__file__)[0]
+    return re.findall(r"\d+", basename(mainmodule.__file__))[0]
 
 def data(day=None):
     return open(f"{day or get_day()}.in").read()
 
 def data_lines(day=None):
-    return data(day).split("\n")
+    return data(day).splitlines()
 
 def data_nums(day=None, by=None):
     return nums(data(day), by)
@@ -19,7 +20,7 @@ def data_lines_nums(day=None, by=None):
     return list(map(lambda l: nums(l, by), data_lines(day=day)))
 
 def nums(s, by=None):
-    if by == None:
+    if by is None:
         by = r"[-\d]+"
     return list(map(int, re.findall(by, s)))
 
