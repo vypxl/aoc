@@ -49,6 +49,7 @@ class IntComputer:
         9: ("arb", 1),
         99: ("hlt", 0),
     }
+    ABORT = "ABORT"
 
     def __format_param(self, p):
         """Format an instruction parameter (val, mode) as either val or [val] depending on address or immideate mode"""
@@ -89,9 +90,13 @@ class IntComputer:
             wr(p3, rd(p1) * rd(p2))
         elif op == 3:
             inVal = await self.readf()
+            if inVal is None or inVal is self.ABORT:
+                return -1
             wr(p1, inVal)
         elif op == 4:
-            await self.writef(rd(p1))
+            v = await self.writef(rd(p1))
+            if v is self.ABORT:
+                return -1
         elif op == 5:
             if rd(p1) != 0:
                 return rd(p2)
