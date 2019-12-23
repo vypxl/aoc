@@ -45,3 +45,4 @@ async def qFill(q, xs):
 lmap = compose(list, map)
 attr = curry(flip(getattr)) # pylint: disable=no-value-for-parameter
 mapattr = compose(map, attr)
+applyN = curry(lambda f, n, x: reduce(lambda x, f: f(x), [f] * n, x))
