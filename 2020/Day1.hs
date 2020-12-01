@@ -1,6 +1,4 @@
 #! /usr/bin/env -S stack runhaskell
-import Data.List
-
 part1 :: [Int] -> Int
 part1 xs = head [x * y | x <- xs, y <- xs, x + y == 2020]
 
