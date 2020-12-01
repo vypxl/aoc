@@ -6,4 +6,4 @@ else
     day=$1
 fi
 # make that request (cookiefile must contain session cookie)
-curl -Ssl -b ./cookiefile https://adventofcode.com/2019/day/$day/input > $day.in
+curl -Ssl -b ./cookiefile https://adventofcode.com/2020/day/$day/input > $day.in
