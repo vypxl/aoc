@@ -11,10 +11,10 @@ main :: IO()
 main = do
     f <- readFile(".in")
     let input = 0
-    putStrLn "Solution for part 1:"
-    print $ part1 input
-    putStrLn "Solution for part 2:"
-    print $ part2 input
+    putStr "Solution for part 1: "
+    putStrLn . show $ part1 input
+    putStr "Solution for part 2: "
+    putStrLn . show $ part2 input
 
 -- Solution part 1: 
 -- Solution part 2: 
