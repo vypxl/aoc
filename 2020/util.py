@@ -2,6 +2,8 @@ from os.path import basename
 import re
 # pylint: disable=unused-wildcard-import
 from toolz.curried import *
+import itertools as it
+import numpy as np
 import __main__ as mainmodule
 
 def get_day():

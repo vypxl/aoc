@@ -1,8 +1,6 @@
 #! /usr/bin/env python
 # pylint: disable=unused-wildcard-import
 from util import *
-from toolz.curried import *
-import re
 
 def p1(inp):
     return "Not Implemented"
