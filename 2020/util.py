@@ -44,6 +44,9 @@ async def qFill(q, xs):
         await q.put(x)
     return q
 
+def tr(s, a, b):
+    return s.translate(str.maketrans(a, b))
+
 lmap = compose(list, map)
 attr = curry(flip(getattr)) # pylint: disable=no-value-for-parameter
 mapattr = compose(map, attr)
