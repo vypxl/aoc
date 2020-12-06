@@ -2,14 +2,17 @@
 # pylint: disable=unused-wildcard-import
 from util import *
 
+def parse(inp):
+    return inp
+
 def p1(inp):
-    return "Not Implemented"
+    return inp
 
 def p2(inp):
-    return "Not Implemented"
+    return ''
 
 def main():
-    inp = data()
+    inp = parse(data())
     print(f"Solution for part 1:\n{p1(inp)}")
     print(f"Solution for part 2:\n{p2(inp)}")
 
