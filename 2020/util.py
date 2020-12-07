@@ -2,6 +2,8 @@ from os.path import basename
 import re
 import itertools as it # pylint: disable=unused-import
 import numpy as np # pylint: disable=unused-import
+import networkx as nx # pylint: disable=unused-import
+import matplotlib.pyplot as plt # pylint: disable=unused-import
 from toolz.curried import * # pylint: disable=unused-wildcard-import
 import __main__ as mainmodule
 
@@ -45,6 +47,22 @@ async def qFill(q, xs):
 
 def tr(s, a, b):
     return s.translate(str.maketrans(a, b))
+
+def nx_from_node_list(nodes, directed=False, weighted=False):
+    ctor = lambda x: nx.DiGraph(x, directed=True) if directed else nx.Graph
+    if weighted:
+        el = [(group[0], dest[0], { 'weight': dest[1] }) for group in nodes for dest in group[1] if dest]
+    else:
+        el = [(group[0], dest) for group in nodes for dest in group[1] if dest]
+    return ctor(el)
+
+def nx_draw_graph(G, weighted=False):
+    pos = nx.shell_layout(G)
+    if weighted:
+        edge_labels = dict([((u, v, ), d['weight']) for u, v, d in G.edges(data=True)])
+        nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
+    nx.draw(G, pos, arrows=True, with_labels=True, node_size=1800)
+    plt.show()
 
 lmap = compose(list, map)
 attr = curry(flip(getattr)) # pylint: disable=no-value-for-parameter
