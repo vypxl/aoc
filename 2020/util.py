@@ -64,6 +64,12 @@ def nx_draw_graph(G, weighted=False):
     nx.draw(G, pos, arrows=True, with_labels=True, node_size=1800)
     plt.show()
 
+def np_print_grid(grid, chars):
+    for i in range(grid.shape[0]):
+        for j in range(grid.shape[1]):
+            print(chars[grid[i, j]], end='')
+        print('')
+
 lmap = compose(list, map)
 attr = curry(flip(getattr)) # pylint: disable=no-value-for-parameter
 mapattr = compose(map, attr)
