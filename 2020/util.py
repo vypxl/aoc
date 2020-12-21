@@ -77,3 +77,6 @@ applyN = curry(lambda f, n, x: reduce(lambda x, f: f(x), [f] * n, x))
 swap = lambda t: (t[1], t[0])
 flatten = lambda l: [item for sublist in l for item in sublist]
 prod = reduce(lambda a, b: a * b)
+fst = lambda x: x[0]
+snd = lambda x: x[1]
+thd = lambda x: x[2]
