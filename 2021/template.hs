@@ -9,12 +9,12 @@ part2 _ = 1
 
 main :: IO()
 main = do
-    f <- readFile(".in")
+    f <- readFile("_DAY_.in")
     let input = 0
     putStr "Solution for part 1: "
     putStrLn . show $ part1 input
     putStr "Solution for part 2: "
     putStrLn . show $ part2 input
 
--- Solution part 1: 
--- Solution part 2: 
+-- Solution part 1:
+-- Solution part 2:
