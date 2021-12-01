@@ -1,3 +1,7 @@
 cookiefile
 .vscode
+.idea
 __pycache__
+out
+lib
+
