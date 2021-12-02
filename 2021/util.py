@@ -24,8 +24,56 @@ def data_lines_nums(day=None, by=None):
 
 def nums(s, by=None):
     if by is None:
-        by = r"[-\d]+"
+        by = r"-?\d+"
     return list(map(int, re.findall(by, s)))
+
+def structured(s, structure):
+    """
+    Parses each line in s into a tuple of given type structure by splitting it on whitespace.
+
+    Usage example:
+    ```
+        s = 'abc 3 5\\nbcd 5 77\\n'
+        structured(s, (str, int, int)) # => [('abc', 3, 5), ('bcd', 5, 77)]
+    ```
+    """
+    return [tuple(t(y) for t, y in zip(structure, x.split())) for x in s.splitlines()]
+
+def structuredre(s, regex, structure):
+    """
+    Parses each line in s into a tuple of given type structure by selecting the capture groups of the given regex.
+
+    Usage example:
+    ```
+        s = 'x := 4\\ny := 6\\n'
+        structuredre(s, r"(\w+) := (\d+)", (str, int)) # => [('x', 4), ('y': 6)]
+    ```
+    """
+    return structured("\n".join(" ".join(re.match(regex, l).groups()) for l in s.splitlines()), structure)
+
+def structuredre_cond(s, regexes, structures):
+    """Same as structuredre, but with multiple possible regexes and corresponding structures"""
+    def match_idx(l):
+        for i, r in enumerate(regexes):
+            if re.fullmatch(r, l):
+                return i
+
+    return list(map(lambda l: let(match_idx(l), lambda i: structuredre(l, regexes[i], structures[i])[0]), s.splitlines()))
+
+def linegroups(s):
+    """Splits s by two newlines and each split by single newlines"""
+    return list(map(lambda g: g.splitlines(), s.split("\n\n")))
+
+def grid(s, mapping):
+    """Parses `s` into a numpy 2D array with each char mapped to its index in `mapping`"""
+    return np.asarray(list(map(lambda l: list(map(lambda c: mapping.find(c), l)), s.splitlines())))
+
+def printgrid(g, mapping):
+    """Prints the inverse of `grid` (the original string)"""
+    for i in range(g.shape[0]):
+        for j in range(g.shape[1]):
+            print(mapping[g[i, j]], end = '')
+        print()
 
 def call(f):
     return f()
@@ -80,3 +128,4 @@ prod = reduce(lambda a, b: a * b)
 fst = lambda x: x[0]
 snd = lambda x: x[1]
 thd = lambda x: x[2]
+let = lambda x, f: f(x)
