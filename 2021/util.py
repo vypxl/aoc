@@ -60,6 +60,12 @@ def structuredre_cond(s, regexes, structures):
 
     return list(map(lambda l: let(match_idx(l), lambda i: structuredre(l, regexes[i], structures[i])[0]), s.splitlines()))
 
+def lines(s):
+    return s.splitlines()
+
+def superlines(s):
+    return list(filter(lambda x: x != "", s.split("\n\n")))
+
 def linegroups(s):
     """Splits s by two newlines and each split by single newlines"""
     return list(map(lambda g: g.splitlines(), s.split("\n\n")))
