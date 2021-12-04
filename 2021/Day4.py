@@ -3,25 +3,14 @@
 from util import *
 
 def parse(inp):
-    lines = inp.splitlines()
-    order = nums(lines[0])
-    boards_raw = "\n".join(lines[2:]).split('\n\n')
-    boards = [np.array(nums(board)).reshape((5,5)) for board in boards_raw]
+    groups = superlines(inp)
+    order = nums(groups[0])
+    boards = [np.array(nums(board)).reshape((5,5)) for board in groups[1:]]
     return order, boards
 
 def won(marks):
-    return any([
-        all(marks[:,0] == 1),
-        all(marks[:,1] == 1),
-        all(marks[:,2] == 1),
-        all(marks[:,3] == 1),
-        all(marks[:,4] == 1),
-        all(marks[0,:] == 1),
-        all(marks[1,:] == 1),
-        all(marks[2,:] == 1),
-        all(marks[3,:] == 1),
-        all(marks[4,:] == 1)
-    ])
+    any_win = lambda xs: any(map(lambda x: np.sum(x) == 5, xs))
+    return any_win(marks) or any_win(marks.T)
 
 def score(board, marks, last_num):
     return int(np.sum(board * np.abs(marks - 1)) * last_num)
