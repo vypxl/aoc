@@ -76,10 +76,7 @@ def grid(s, mapping):
 
 def printgrid(g, mapping):
     """Prints the inverse of `grid` (the original string)"""
-    for i in range(g.shape[0]):
-        for j in range(g.shape[1]):
-            print(mapping[g[i, j]], end = '')
-        print()
+    np_print_grid(g, mapping) # leaving the old one there for backwards compatibility
 
 def call(f):
     return f()
