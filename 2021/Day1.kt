@@ -1,4 +1,3 @@
-#! /usr/bin/env kotlin
 import java.io.File
 
 typealias TInput1 = List<Int>

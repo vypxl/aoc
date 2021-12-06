@@ -1,4 +1,3 @@
-#! /usr/bin/env kotlin
 import java.io.File
 
 data class Command(val kind: String, val x: Int)
