@@ -3,23 +3,10 @@
 from util import *
 
 def p1(inp):
-    m = 239485778978
-    for i in range(np.max(inp)):
-        x = np.sum(np.abs(inp - i))
-        m = min(m, x)
-    return m
+    return min(sum(np.abs(inp - i)) for i in range(max(inp)))
 
 def p2(inp):
-    m = 239485778978
-    for i in range(np.max(inp)):
-        xs = np.abs(inp - i)
-        
-        x = 0
-        for a in xs:
-            x += (a * (a+1)) // 2
-
-        m = min(m, x)
-    return m
+    return min(sum((x * (x + 1) // 2) for x in np.abs(inp - i)) for i in range(max(inp)))
 
 def main():
     inp = np.array(nums(data()))
@@ -31,3 +18,4 @@ if __name__ == "__main__":
 
 # Solution part 1: 349769
 # Solution part 2: 99540554
+# Leaderboard: 534 / 1511
