@@ -70,9 +70,16 @@ def linegroups(s):
     """Splits s by two newlines and each split by single newlines"""
     return list(map(lambda g: g.splitlines(), s.split("\n\n")))
 
-def grid(s, mapping):
-    """Parses `s` into a numpy 2D array with each char mapped to its index in `mapping`"""
-    return np.asarray(list(map(lambda l: list(map(lambda c: mapping.find(c), l)), s.splitlines())))
+def grid(s, mapping=None):
+    """
+    Parses `s` into a numpy 2D array.
+    If `mapping` is not given, the characters in `s` are assumed to be digits.
+    If `mapping` is given, each char is mapped to its index in `mapping`
+    """
+    if mapping is None:
+        return np.array([[int(c) for c in l] for l in lines(s)])
+    else:
+        return np.asarray([[mapping.find(c) for c in l] for l in lines(s)])
 
 def printgrid(g, mapping):
     """Prints the inverse of `grid` (the original string)"""
