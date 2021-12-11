@@ -3,35 +3,30 @@
 from util import *
 
 def increase(grid, i, j, in_flash=False):
-    if i < 0 or j < 0 or i >= grid.shape[0] or j >= grid.shape[1]: return
+    if not grid_index_valid(grid, i, j): return
     if in_flash and grid[i, j] == 0: return
     grid[i, j] += 1
 
     if grid[i, j] > 9:
         grid[i, j] = 0
-        return (i, j)
-    return None
-
-neighbours = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
+        return True
+    return False
 
 def step(grid):
     flash = []
 
-    for i in range(grid.shape[0]):
-        for j in range(grid.shape[1]):
-            a = increase(grid, i, j)
-            if a is not None:
-                flash.append(a)
+    for i, j in grid_indices(grid):
+        if increase(grid, i, j):
+            flash.append((i, j))
 
     count = 0
 
     while len(flash) > 0:
         count += 1
         i, j = flash.pop(0)
-        for x, y in neighbours:
-            a = increase(grid, i + x, j + y, True)
-            if a is not None:
-                flash.append(a)
+        for x, y in neighbours_both:
+            if increase(grid, i + x, j + y, True):
+                flash.append((i + x, j + y))
 
     return count
 

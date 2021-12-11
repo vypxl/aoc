@@ -81,6 +81,15 @@ def grid(s, mapping=None):
     else:
         return np.asarray([[mapping.find(c) for c in l] for l in lines(s)])
 
+def grid_index_valid(grid, i, j):
+    if isinstance(grid, np.ndarray):
+        return i >= 0 and i < grid.shape[0] and j >= 0 and j < grid.shape[1]
+    else:
+        return i >= 0 and i < len(grid) and j >= 0 and j < len(grid[0])
+
+def grid_indices(grid):
+    return list(it.product(range(len(grid)), range(len(grid[0]))))
+
 def printgrid(g, mapping):
     """Prints the inverse of `grid` (the original string)"""
     np_print_grid(g, mapping) # leaving the old one there for backwards compatibility
@@ -139,3 +148,7 @@ fst = lambda x: x[0]
 snd = lambda x: x[1]
 thd = lambda x: x[2]
 let = lambda x, f: f(x)
+
+neighbours_straight = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+neighbours_diag = [(-1, -1), (-1, 1), (1, -1), (1, 1)]
+neighbours_both = neighbours_straight + neighbours_diag
