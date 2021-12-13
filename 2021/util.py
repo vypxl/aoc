@@ -90,9 +90,24 @@ def grid_index_valid(grid, i, j):
 def grid_indices(grid):
     return list(it.product(range(len(grid)), range(len(grid[0]))))
 
-def printgrid(g, mapping):
+def printgrid(g, mapping = " █", crop = False):
     """Prints the inverse of `grid` (the original string)"""
-    np_print_grid(g, mapping) # leaving the old one there for backwards compatibility
+    print(showgrid(g, mapping, crop))
+
+def showgrid(g, mapping = " █", crop = False):
+    """Returns the inverse of `grid` (the original string)"""
+    s = ""
+    x0, xn, y0, yn = 0, g.shape[0], 0, g.shape[1]
+    if crop:
+        xs = np.argwhere(g)
+        x0, y0 = xs.min(axis=0)
+        xn, yn = xs.max(axis=0) + 1
+    for i in range(x0, xn):
+        for j in range(y0, yn):
+            s += mapping[g[i, j]]
+        s += "\n"
+    
+    return s
 
 def call(f):
     return f()
@@ -131,11 +146,9 @@ def nx_draw_graph(G, weighted=False):
     nx.draw(G, pos, arrows=True, with_labels=True, node_size=1800)
     plt.show()
 
-def np_print_grid(grid, chars):
-    for i in range(grid.shape[0]):
-        for j in range(grid.shape[1]):
-            print(chars[grid[i, j]], end='')
-        print('')
+def np_print_grid(grid, chars = " █", crop = False):
+    print(showgrid(grid, chars, crop)) # leaving the old one there for backwards compatibility
+    
 
 lmap = compose(list, map)
 attr = curry(flip(getattr)) # pylint: disable=no-value-for-parameter
