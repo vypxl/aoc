@@ -20,11 +20,7 @@ def p2(inp):
     dots, instrs = inp
     dots = reduce(fold, instrs, dots)
 
-    m = max(flatten(dots)) + 1
-    grid = np.zeros((m, m), dtype=int)
-    grid[tuple(zip(*dots))] = 1
-
-    return showgrid(grid.T, crop=True)
+    return showgrid(grid_from_indices(dots))
 
 def main():
     inp = parse(data())

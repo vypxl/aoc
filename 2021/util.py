@@ -81,6 +81,18 @@ def grid(s, mapping=None):
     else:
         return np.asarray([[mapping.find(c) for c in l] for l in lines(s)])
 
+def grid_from_indices(indices):
+    """
+    Creates a grid of zeros large enough to contain all indices in the given list of tuples,
+    and sets the grid at every index to 1.
+    Also works with negative indices (everything is shifted so the smallest index is 0).
+    """
+    mnx = min(map(fst, indices))
+    mny = min(map(snd, indices))
+    mx = max(map(fst, indices)) + 1
+    my = max(map(snd, indices)) + 1
+    return np.array([[1 if (i, j) in indices else 0 for j in range(mny, my)] for i in range(mnx, mx)]).T
+
 def grid_index_valid(grid, i, j):
     if isinstance(grid, np.ndarray):
         return i >= 0 and i < grid.shape[0] and j >= 0 and j < grid.shape[1]
