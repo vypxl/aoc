@@ -30,6 +30,7 @@ def nums(s, by=None):
 def structured(s, structure):
     """
     Parses each line in s into a tuple of given type structure by splitting it on whitespace.
+    Pass None as a type to skip a value.
 
     Usage example:
     ```
@@ -37,7 +38,8 @@ def structured(s, structure):
         structured(s, (str, int, int)) # => [('abc', 3, 5), ('bcd', 5, 77)]
     ```
     """
-    return [tuple(t(y) for t, y in zip(structure, x.split())) for x in s.splitlines()]
+    if not isinstance(s, list): s = s.splitlines()
+    return [tuple(t(y) for t, y in zip(structure, x.split()) if t is not None) for x in s]
 
 def structuredre(s, regex, structure):
     """
@@ -53,12 +55,13 @@ def structuredre(s, regex, structure):
 
 def structuredre_cond(s, regexes, structures):
     """Same as structuredre, but with multiple possible regexes and corresponding structures"""
+    if not isinstance(s, list): s = s.splitlines()
     def match_idx(l):
         for i, r in enumerate(regexes):
             if re.fullmatch(r, l):
                 return i
 
-    return list(map(lambda l: let(match_idx(l), lambda i: structuredre(l, regexes[i], structures[i])[0]), s.splitlines()))
+    return list(map(lambda l: let(match_idx(l), lambda i: structuredre(l, regexes[i], structures[i])[0]), s))
 
 def lines(s):
     return s.splitlines()
