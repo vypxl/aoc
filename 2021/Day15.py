@@ -1,39 +1,17 @@
 #! /usr/bin/env python
 # pylint: disable=unused-wildcard-import
-
 from util import *
-from queue import PriorityQueue
-from collections import defaultdict
 
 def p1(inp):
-    S = (0, 0)
-    Q = PriorityQueue()
-    Q.put((0, S))
-    seen = set()
-    d = defaultdict(lambda: np.inf)
-    d[S] = 0
-
-    while not Q.empty():
-        el = Q.get()
-        x, y = el[1]
-
-        for dx, dy in [(0, 1), (1, 0), (0, -1), (-1, 0)]:
-            nx, ny = x + dx, y + dy
-            if (nx, ny) in seen or not grid_index_valid(inp, nx, ny):
-                continue
-            seen.add((nx, ny))
-            nd = d[(x, y)] + inp[nx, ny]
-            if nd < d[(nx, ny)]: d[(nx, ny)] = nd
-            Q.put((d[(nx, ny)], (nx, ny)))
-
-    return d[(inp.shape[0] - 1, inp.shape[1] - 1)]
+    return dijkstra_grid(inp, (0, 0), neighbours_straight, inp)[0][(inp.shape[0]-1, inp.shape[1]-1)]
 
 def p2(inp):
-    grid = np.zeros((inp.shape[0]*5, inp.shape[1]*5), dtype=int)
-    inp = inp - 1
+    w, h = inp.shape
+    grid = np.zeros((w*5, h*5), dtype=int)
+
     for i in range(5):
         for j in range(5):
-            grid[i*inp.shape[0]:(i+1)*inp.shape[0], j*inp.shape[1]:(j+1)*inp.shape[1]] = np.mod(inp + i + j, 9) + 1
+            grid[i*w:(i+1)*w, j*h:(j+1)*h] = np.mod(inp - 1 + i + j, 9) + 1
 
     return p1(grid)
 
