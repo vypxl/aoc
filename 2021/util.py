@@ -5,6 +5,8 @@ import numpy as np # pylint: disable=unused-import
 import networkx as nx # pylint: disable=unused-import
 import matplotlib.pyplot as plt # pylint: disable=unused-import
 from toolz.curried import * # pylint: disable=unused-wildcard-import
+from queue import PriorityQueue
+from collections import defaultdict
 import __main__ as mainmodule
 
 def get_day():
@@ -106,11 +108,16 @@ def grid_indices(grid):
     return list(it.product(range(len(grid)), range(len(grid[0]))))
 
 def printgrid(g, mapping = " █", crop = False):
-    """Prints the inverse of `grid` (the original string)"""
+    """Prints the output of `showgrid`"""
     print(showgrid(g, mapping, crop))
 
 def showgrid(g, mapping = " █", crop = False):
-    """Returns the inverse of `grid` (the original string)"""
+    """
+    Returns the inverse of `grid` (the original string)
+    By default, outputs a ' ' for every 0 and a '█' for every 1.
+    You can specify this by passing `mapping` as a string containing the characters you want to print for each number in order.
+    You can turn off this mapping by passing None.
+    """
     s = ""
     x0, xn, y0, yn = 0, g.shape[0], 0, g.shape[1]
     if crop:
@@ -119,10 +126,50 @@ def showgrid(g, mapping = " █", crop = False):
         xn, yn = xs.max(axis=0) + 1
     for i in range(x0, xn):
         for j in range(y0, yn):
-            s += mapping[g[i, j]]
+            s += str(g[i, j]) if mapping is None else mapping[g[i, j]]
         s += "\n"
     
     return s
+
+def dijkstra(S, neighbours):
+    """
+    Returns the d and v for the dijkstra algorithm on the graph defined by the starting point S
+    and the neighbours function.
+
+    neighbours(v) should return a list of tuples (n, d) where n is a neighbour of v and d is the distance between them.
+    """
+    Q = PriorityQueue()
+    Q.put((0, S))
+    seen = set()
+    d = defaultdict(lambda: np.inf)
+    prev = defaultdict(None)
+    d[S] = 0
+    prev[S] = None
+
+    while not Q.empty():
+        vd, v = Q.get()
+        seen.add(v)
+
+        for neigh, cost in neighbours(v):
+            if neigh in seen: continue
+            nd = vd + cost
+            if nd < d[neigh]:
+                d[neigh] = nd
+                prev[neigh] = v
+                Q.put((nd, neigh))
+
+    return d, prev
+
+def dijkstra_grid(grid, S, neighbours, weights = None):
+    """
+    Returns d and prev for the Dijkstra algorithm on the given grid and the list of neighbours (eg neighbours_straight)
+    If `weights` is not None, the weight off each edge will be the value of `weights` at position of the neighbour.
+    """
+    return dijkstra(S, lambda v: [
+        ((v[0] + x, v[1] + y), weights[v[0] + x, v[1] + y] if weights is not None else 1)
+        for x, y in neighbours
+        if grid_index_valid(grid, v[0] + x, v[1] + y)
+    ])
 
 def call(f):
     return f()
