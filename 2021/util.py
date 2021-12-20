@@ -121,7 +121,8 @@ def showgrid(g, mapping = " █", crop = False):
     s = ""
     x0, xn, y0, yn = 0, g.shape[0], 0, g.shape[1]
     if crop:
-        xs = np.argwhere(g)
+        invert = g[0, 0] != 0 and g[-1, -1] != 0
+        xs = np.argwhere(g == 0 if invert else g)
         x0, y0 = xs.min(axis=0)
         xn, yn = xs.max(axis=0) + 1
     for i in range(x0, xn):
