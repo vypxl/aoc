@@ -1,0 +1,9 @@
+#! /bin/bash
+# get current day (bc is for stripping of any leading zeroes)
+if [ -z $1 ]; then
+    day=$(date +"%d" | bc)
+else
+    day=$1
+fi
+# make that request (cookiefile must contain session cookie)
+curl -Ssl -b ./cookiefile https://adventofcode.com/2022/day/$day/input > $day.in
