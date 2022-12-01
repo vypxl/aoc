@@ -6,4 +6,6 @@ else
     day=$1
 fi
 # make that request (cookiefile must contain session cookie)
-curl -Ssl -b ./cookiefile https://adventofcode.com/2022/day/$day/input > $day.in
+curl -Ssl \
+  -A "github.com/vypxl/aoc: 2022/getinput by thomas@vypxl.io" \
+  -b ./cookiefile https://adventofcode.com/2022/day/$day/input > $day.in

@@ -6,6 +6,7 @@ if [[ "$#" -ne 3 ]]; then
 fi
 
 curl -Ssl -b ./cookiefile "https://adventofcode.com/2022/day/$1/answer" \
+  -A "github.com/vypxl/aoc: 2022/submit by thomas@vypxl.io" \
   -H 'content-type: application/x-www-form-urlencoded' \
   -H 'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9' \
   --data-raw "level=$2&answer=$3" \
