@@ -1,6 +1,7 @@
 cookiefile
 .vscode
 .idea
+.vim
 __pycache__
 out
 lib
