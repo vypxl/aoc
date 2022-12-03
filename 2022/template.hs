@@ -1,13 +1,18 @@
 #! /usr/bin/env -S stack runhaskell
 import Data.List
+import Data.List.Split
+import Data.Char
 
-parse :: String -> String
+type Input = String
+type Output = Int
+
+parse :: String -> Input
 parse = id
 
-part1 :: Int -> Int
+part1 :: Int -> Ouptut
 part1 _ = 0
 
-part2 :: Int -> Int
+part2 :: Int -> Output
 part2 _ = 1
 
 main :: IO()
