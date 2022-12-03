@@ -6,11 +6,7 @@ def parse(inp):
     return lines(inp)
 
 def prio(c):
-    if ord(c) >= ord('a') and ord(c) <= ord('z'):
-        return ord(c) - ord('a') + 1
-    if ord(c) >= ord('A') and ord(c) <= ord('Z'):
-        return ord(c) - ord('A') + 27
-    return 0
+    return 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.index(c) + 1
 
 def intersectRucksack(rucksack):
     return set.intersection(*(map(set, parts(rucksack, 2)))).pop()
