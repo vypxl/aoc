@@ -227,6 +227,20 @@ def chunks(a, k, slide=False):
         return [a[i:i+k] for i in range(len(a)-k+1)]
     return [a[i:i+k] for i in range(0, len(a), k)]
 
+def parts(a, k):
+    """
+    Divides a into k parts.
+    [a] -> [[a]]
+
+    The parts will be as of equal size:
+    [a, b, c, d, e, f] -> [[a, b, c], [d, e, f]]
+    [a, b, c, d, e, f] -> [[a, b], [c, d], [e, f]]
+    [a, b, c, d, e, f] -> [[a], [b], [c], [d], [e], [f]]
+    """
+    if len(a) % k != 0:
+        raise ValueError(f"Cannot divide into {k} parts")
+    return chunks(a, len(a) // k)
+
 lmap = compose(list, map)
 attr = curry(flip(getattr)) # pylint: disable=no-value-for-parameter
 mapattr = compose(map, attr)

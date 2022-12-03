@@ -12,25 +12,17 @@ def prio(c):
         return ord(c) - ord('A') + 27
     return 0
 
+def intersectRucksack(rucksack):
+    return set.intersection(*(map(set, parts(rucksack, 2)))).pop()
+
+def intersectBadge(badge):
+    return set.intersection(*map(set, badge)).pop()
+
 def p1(inp):
-    sum = 0
-    for x in inp:
-        a = set(x[:len(x)//2])
-        b = set(x[len(x)//2:])
-        c = a.intersection(b)
-        sum += prio(list(c)[0])
-    return sum
+    return sum(prio(intersectRucksack(rucksack)) for rucksack in inp)
 
 def p2(inp):
-    sum = 0
-    for x in chunks(inp, 3):
-        a = set(x[0])
-        b = set(x[1])
-        c = set(x[2])
-        d = a.intersection(b)
-        e = d.intersection(c)
-        sum += prio(list(e)[0])
-    return sum
+    return sum(prio(intersectBadge(badge)) for badge in chunks(inp, 3))
 
 def main():
     inp = parse(data())
