@@ -8,17 +8,14 @@ def parse(inp):
 def prio(c):
     return 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.index(c) + 1
 
-def intersectRucksack(rucksack):
-    return set.intersection(*(map(set, parts(rucksack, 2)))).pop()
-
-def intersectBadge(badge):
-    return set.intersection(*map(set, badge)).pop()
+def intersect(xs):
+    return set.intersection(*map(set, xs)).pop()
 
 def p1(inp):
-    return sum(prio(intersectRucksack(rucksack)) for rucksack in inp)
+    return sum(prio(intersect(parts(rucksack, 2))) for rucksack in inp)
 
 def p2(inp):
-    return sum(prio(intersectBadge(badge)) for badge in chunks(inp, 3))
+    return sum(prio(intersect(badge)) for badge in chunks(inp, 3))
 
 def main():
     inp = parse(data())
