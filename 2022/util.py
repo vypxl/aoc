@@ -29,6 +29,9 @@ def nums(s, by=None):
         by = r"-?\d+"
     return list(map(int, re.findall(by, s)))
 
+def pnums(s):
+    return nums(s, by=r"\d+")
+
 def structured(s, structure):
     """
     Parses each line in s into a tuple of given type structure by splitting it on whitespace.
