@@ -1,4 +1,4 @@
-#! /usr/bin/env -S stack runhaskell
+#! /usr/bin/env -S runhaskell
 import Data.List
 import Data.List.Split
 import Data.Char
@@ -9,10 +9,10 @@ type Output = Int
 parse :: String -> Input
 parse = id
 
-part1 :: Int -> Ouptut
+part1 :: Input -> Output
 part1 _ = 0
 
-part2 :: Int -> Output
+part2 :: Input -> Output
 part2 _ = 1
 
 main :: IO()
