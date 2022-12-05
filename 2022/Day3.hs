@@ -1,4 +1,4 @@
-#! /usr/bin/env -S stack runhaskell
+#! /usr/bin/env -S runhaskell
 import Data.List
 import Data.List.Split
 import Data.Char

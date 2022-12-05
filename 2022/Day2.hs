@@ -1,4 +1,4 @@
-#! /usr/bin/env -S stack runhaskell
+#! /usr/bin/env -S runhaskell
 import Data.Char
 
 parse :: String -> [(Int, Int)]

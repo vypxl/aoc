@@ -1,22 +1,15 @@
-#! /usr/bin/env -S stack runhaskell
+#! /usr/bin/env -S runhaskell
 import Data.List
 import Data.List.Split
 import Data.Char
 
+import Util
+
 type Input = [([Int], [Int])]
 type Output = Int
 
-tuple2 :: [a] -> (a, a)
-tuple2 [x, y] = (x, y)
-
 parse :: String -> Input
 parse = map (tuple2 . map (uncurry enumFromTo . tuple2 . map read . splitOn "-") . splitOn ",") . lines
-
-issubset :: Eq a => [a] -> [a] -> Bool
-issubset = (null . ) . (\\)
-
-count :: (a -> Bool) -> [a] -> Int
-count = (length . ) . filter
 
 part1 :: Input -> Output
 part1 = count $ or . (uncurry <$> ([id, flip] <*> pure issubset) <*>) . pure
