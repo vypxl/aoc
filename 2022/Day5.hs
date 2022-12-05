@@ -1,10 +1,10 @@
 #! /usr/bin/env -S runhaskell
-import Control.Monad ((<=<), filterM)
+import Control.Monad ((<=<))
 import Data.Array
 import Data.Char (isAlpha)
 import Data.List
 import Data.List.Split
-import Data.Maybe (isJust, mapMaybe)
+import Data.Maybe (mapMaybe)
 import Text.Read (readMaybe)
 
 import Util
