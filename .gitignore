@@ -3,6 +3,7 @@ cookiefile
 .idea
 .vim
 __pycache__
+dist-newstyle
 out
 lib
 
