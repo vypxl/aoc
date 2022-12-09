@@ -1,12 +1,13 @@
 from os.path import basename
 import re
+import math # pylint: disable=unused-import
 import itertools as it # pylint: disable=unused-import
+from queue import PriorityQueue
+from collections import defaultdict
 import numpy as np # pylint: disable=unused-import
 import networkx as nx # pylint: disable=unused-import
 import matplotlib.pyplot as plt # pylint: disable=unused-import
 from toolz.curried import * # pylint: disable=unused-wildcard-import
-from queue import PriorityQueue
-from collections import defaultdict
 import __main__ as mainmodule
 
 def get_day():
