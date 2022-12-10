@@ -72,6 +72,10 @@ def structuredre_cond(s, regexes, structures):
 def lines(s):
     return s.splitlines()
 
+def splittedlines(s):
+    """Splits s into lines, then splits each line by python's `.split()`"""
+    return [s.split() for s in s.splitlines()]
+
 def superlines(s):
     return list(filter(lambda x: x != "", s.split("\n\n")))
 
