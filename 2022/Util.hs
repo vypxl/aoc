@@ -8,12 +8,25 @@ import Text.Read (readMaybe)
 type Grid = [[Int]]
 type BGrid = [[Bool]]
 
+if' :: Bool -> a -> a -> a
+if' c a b = if c then a else b
+
+(?) :: Bool -> a -> a -> a
+(?) = if'
+infix 1 ?
+
+divides :: Int -> Int -> Bool
+divides = ((==0) . ) . flip mod
+
 superlines :: String -> [String]
 superlines = splitOn "\n\n"
 
 trim :: String -> String
 trim = f . f
    where f = reverse . dropWhile isSpace
+
+capitalize :: String -> String
+capitalize = (:) <$> toUpper . head <*> tail
 
 grid :: String -> Maybe [[Int]]
 grid = mapM (mapM (readMaybe . return)) . lines
