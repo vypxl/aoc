@@ -169,7 +169,7 @@ def dijkstra(S, neighbours):
 
     return d, prev
 
-def dijkstra_grid(grid, S, neighbours, weights = None):
+def dijkstra_grid(grid, S, neighbours, condition = None, weights = None):
     """
     Returns d and prev for the Dijkstra algorithm on the given grid and the list of neighbours (eg neighbours_straight)
     If `weights` is not None, the weight off each edge will be the value of `weights` at position of the neighbour.
@@ -177,7 +177,7 @@ def dijkstra_grid(grid, S, neighbours, weights = None):
     return dijkstra(S, lambda v: [
         ((v[0] + x, v[1] + y), weights[v[0] + x, v[1] + y] if weights is not None else 1)
         for x, y in neighbours
-        if grid_index_valid(grid, v[0] + x, v[1] + y)
+        if grid_index_valid(grid, v[0] + x, v[1] + y) and (True if condition is None else condition(v, (v[0] + x, v[1] + y)))
     ])
 
 def call(f):
@@ -256,6 +256,7 @@ applyN = curry(lambda f, n, x: reduce(lambda x, f: f(x), [f] * n, x))
 swap = lambda t: (t[1], t[0])
 flatten = lambda l: [item for sublist in l for item in sublist]
 prod = reduce(lambda a, b: a * b)
+# unzip = lambda a, b: 
 fst = lambda x: x[0]
 snd = lambda x: x[1]
 thd = lambda x: x[2]
