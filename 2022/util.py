@@ -2,7 +2,7 @@ from os.path import basename
 import re
 import math # pylint: disable=unused-import
 import itertools as it # pylint: disable=unused-import
-from queue import PriorityQueue
+from queue import PriorityQueue, Queue
 from collections import defaultdict
 import numpy as np # pylint: disable=unused-import
 import networkx as nx # pylint: disable=unused-import
@@ -157,6 +157,7 @@ def dijkstra(S, neighbours):
 
     while not Q.empty():
         vd, v = Q.get()
+        # print(vd, v)
         seen.add(v)
 
         for neigh, cost in neighbours(v):
@@ -169,6 +170,65 @@ def dijkstra(S, neighbours):
 
     return d, prev
 
+def bdfs(push, pop, empty, S, neighbours):
+    push((0, S))
+    seen = set()
+    d = defaultdict(lambda: np.inf)
+    prev = defaultdict(None)
+    d[S] = 0
+    prev[S] = None
+
+    while not empty():
+        vd, v = pop()
+        seen.add(v)
+
+        for neigh in neighbours(v):
+            if neigh in seen: continue
+            nd = vd + 1
+            if nd < d[neigh]:
+                d[neigh] = nd
+                prev[neigh] = v
+                push((nd, neigh))
+
+    return d, prev
+
+def bfs(S, neighbours):
+    """
+    Returns the d and v for the BFS algorithm on the graph defined by the starting point S
+    and the neighbours function.
+
+    neighbours(v) should return a list of neighbours of v
+    """
+    q = Queue()
+    return bdfs(q.put, q.get, q.empty, S, neighbours)
+
+def dfs(S, neighbours):
+    """
+    Returns the d and v for the DFS algorithm on the graph defined by the starting point S
+    and the neighbours function.
+
+    neighbours(v) should return a list of neighbours of v
+    """
+    s = []
+    return bdfs(s.append, s.pop, lambda: len(s) == 0, S, neighbours)
+
+def bdfs_grid(push, pop, empty, S, grid, neighbours, condition = None):
+    return bdfs(push, pop, empty, S, lambda v: [
+        (v[0] + x, v[1] + y)
+        for x, y in neighbours
+        if grid_index_valid(grid, v[0] + x, v[1] + y) and (True if condition is None else condition(v, (v[0] + x, v[1] + y)))
+    ])
+
+def dfs_grid(S, grid, neighbours, condition = None):
+    "Same as dijkstra_grid but using DFS"
+    s = []
+    return bdfs_grid(s.append, s.pop, lambda: len(s) == 0, S, grid, neighbours, condition)
+
+def bfs_grid(S, grid, neighbours, condition = None):
+    "Same as dijkstra_grid but using BFS"
+    q = Queue()
+    return bdfs_grid(q.put, q.get, q.empty, S, grid, neighbours, condition)
+
 def dijkstra_grid(grid, S, neighbours, condition = None, weights = None):
     """
     Returns d and prev for the Dijkstra algorithm on the given grid and the list of neighbours (eg neighbours_straight)
@@ -179,6 +239,40 @@ def dijkstra_grid(grid, S, neighbours, condition = None, weights = None):
         for x, y in neighbours
         if grid_index_valid(grid, v[0] + x, v[1] + y) and (True if condition is None else condition(v, (v[0] + x, v[1] + y)))
     ])
+
+def reach(S, neighbours):
+    """Returns a set of vertices that can be reached from the given start point S."""
+    Q = Queue()
+
+    Q.put(S)
+    seen = set()
+
+    while not Q.empty():
+        v = Q.get()
+        if v in seen: continue
+        seen.add(v)
+
+        for neigh in neighbours(v):
+            Q.put(neigh)
+
+    return seen
+
+def find(S, neighbours, condition):
+    """Takes a start point S and a condition and returns True if a vertex satisfying the condition is reachable from S."""
+    s = [S]
+    seen = set()
+
+    while s:
+        v = s.pop()
+        if v in seen: continue
+        seen.add(v)
+
+        for neigh in neighbours(v):
+            if condition(neigh):
+                return True
+            s.append(neigh)
+
+    return False
 
 def call(f):
     return f()
