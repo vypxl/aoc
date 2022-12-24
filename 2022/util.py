@@ -137,8 +137,36 @@ def showgrid(g, mapping = " █", crop = False):
         for j in range(y0, yn):
             s += str(g[i, j]) if mapping is None else mapping[g[i, j]]
         s += "\n"
-    
+
     return s
+
+def shortest_path(S, neighbours, D_cond):
+    """
+    Returns the distance from S to the nearest vertex satisfying D_cond on the graph defined by the starting point S
+    and the neighbours function using Dijkstra's algorithm.
+
+    neighbours(v) should return a list of tuples (n, d) where n is a neighbour of v and d is the distance between them.
+    """
+    Q = PriorityQueue()
+    Q.put((0, S))
+    seen = set()
+    d = defaultdict(lambda: np.inf)
+    d[S] = 0
+
+    while not Q.empty():
+        vd, v = Q.get()
+        if D_cond(v):
+            return vd
+        seen.add(v)
+
+        for neigh, cost in neighbours(v):
+            if neigh in seen: continue
+            nd = vd + cost
+            if nd < d[neigh]:
+                d[neigh] = nd
+                Q.put((nd, neigh))
+
+    return -1
 
 def dijkstra(S, neighbours):
     """
