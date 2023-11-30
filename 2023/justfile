@@ -21,12 +21,6 @@ getinput day=today:
     -H "cookie: session=$SESSION" \
     https://adventofcode.com/{{year}}/day/{{day}}/input > {{day}}.in
 
-getinput2 day=today:
-  # cookiefile must contain session cookie
-  curl -Ssl \
-    -A "github.com/vypxl/aoc: {{year}}/getinput by thomas@vypxl.io" \
-    -b ./cookiefile https://adventofcode.com/{{year}}/day/{{day}}/input > {{day}}.in
-
 export TZ := "UTC"
 schedulegetinput:
   echo "sleep 2; just --justfile {{justfile()}} getinput" | at 5am
