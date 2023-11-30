@@ -1,2 +1,48 @@
-today:
-  ./today
+set dotenv-load
+
+editor := 'nvim'
+today := `date +"%d" | bc`
+year := file_stem(justfile_directory())
+
+day day=today:
+  @./Day{{day}}.*
+
+_gen template day fname:
+  cp "template.{{template}}" {{fname}}
+  sed -i "s/_DAY_/{{day}}/g" {{fname}}
+  chmod +x {{fname}}
+
+gen template day=today: (_gen (template) (day) ('Day' + day + '.' + template))
+
+getinput day=today:
+  # .env must contain session cookie in variable SESSION
+  @curl -Ssl \
+    -A "github.com/vypxl/aoc: {{year}}/getinput by thomas@vypxl.io" \
+    -H "cookie: session=$SESSION" \
+    https://adventofcode.com/{{year}}/day/{{day}}/input > {{day}}.in
+
+getinput2 day=today:
+  # cookiefile must contain session cookie
+  curl -Ssl \
+    -A "github.com/vypxl/aoc: {{year}}/getinput by thomas@vypxl.io" \
+    -b ./cookiefile https://adventofcode.com/{{year}}/day/{{day}}/input > {{day}}.in
+
+export TZ := "UTC"
+schedulegetinput:
+  echo "sleep 2; just --justfile {{justfile()}} getinput" | at 5am
+
+submit day part answer:
+  # cookiefile must contain session cookie
+  @curl -Ssl "https://adventofcode.com/{{year}}/day/{{day}}/answer" \
+    -A "github.com/vypxl/aoc: {{year}}/submit by thomas@vypxl.io" \
+    -H "cookie: session=$SESSION" \
+    -H 'content-type: application/x-www-form-urlencoded' \
+    -H 'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9' \
+    --data-raw "level={{part}}&answer={{answer}}" \
+    | lynx -stdin -dump -nolist | awk -v RS= 'END{if (NR) print}'
+
+viewinput day=today:
+  cat {{day}}.in
+
+edit day=today:
+  {{editor}} Day{{day}}.* {{day}}.in

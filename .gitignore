@@ -6,4 +6,4 @@ __pycache__
 dist-newstyle
 out
 lib
-
+.env

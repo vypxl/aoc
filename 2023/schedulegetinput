@@ -1,5 +1,0 @@
-#! /bin/bash
-SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
-export TZ=UTC
-echo "sleep 2; $SCRIPT_DIR/getinput" | at 5am
-
