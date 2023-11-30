@@ -1,0 +1,10 @@
+#! /bin/bash
+if [ -z "$1" ] || [ -z "$2" ]; then
+    echo "Usage: gen <day> <template>"
+else
+    fname="Day$1.$2"
+    cp "template.$2" $fname
+    sed -i "s/_DAY_/$1/g" $fname
+    chmod +x $fname
+    ./getinput $1
+fi
