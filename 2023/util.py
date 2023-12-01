@@ -53,6 +53,11 @@ def pnums(s):
     return nums(s, by=r"\d+")
 
 
+def digits(s):
+    """Get a list of digits that appear in the given string."""
+    return [int(d) for d in s if d.isdigit()]
+
+
 def structured(s, structure):
     r"""
     Parse each line in s into a tuple of given type structure by splitting it on whitespace. Pass None as a type to skip a value.
