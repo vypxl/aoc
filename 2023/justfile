@@ -7,6 +7,9 @@ year := file_stem(justfile_directory())
 day day=today:
   @./Day{{day}}.*
 
+watch day=today:
+  find . -type f | entr -rcs 'just day {{day}}'
+
 _gen template day fname:
   cp "template.{{template}}" {{fname}}
   sed -i "s/_DAY_/{{day}}/g" {{fname}}
