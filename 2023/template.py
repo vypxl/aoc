@@ -1,17 +1,19 @@
 #! /usr/bin/env python
-# pylint: disable=unused-wildcard-import
+# noqa
+# pylint: disable=unused-wildcard-import, unused-argument
+
 from util import *
 
 
-def parse(inp):
+def parse(inp):  # noqa
     return inp
 
 
-def p1(inp):
+def p1(inp):  # noqa
     return inp
 
 
-def p2(inp):
+def p2(inp):  # noqa
     return ""
 
 
@@ -19,7 +21,7 @@ ex = """
 """
 
 
-def main():
+def main():  # noqa
     inp = parse(data())
     # inp = parse(ex)
     print(f"Solution for part 1:\n{p1(inp)}")
