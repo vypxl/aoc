@@ -43,3 +43,5 @@ viewinput day=today:
 
 edit day=today:
   {{editor}} Day{{day}}.* {{day}}.in
+
+setup template="py" day=today: (gen (template) (day)) (getinput (day)) schedulegetinput (watch (day))
