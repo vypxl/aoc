@@ -3,7 +3,11 @@ module Util where
 import Data.Char
 import Data.List
 import Data.List.Split
+import qualified Data.Map as M
 import Text.Read (readMaybe)
+
+import Control.Concurrent.MVar
+import System.IO.Unsafe(unsafePerformIO)
 
 type Grid = [[Int]]
 type BGrid = [[Bool]]
@@ -66,3 +70,17 @@ dropLast = applyN init
 (#) :: a -> a -> [a]
 (#) = ( . return ) . (:)
 
+-- Taken from https://hackage.haskell.org/package/uglymemo
+-- By Lennart Augustsson
+memoIO :: (Ord a) => (a -> b) -> IO (a -> IO b)
+memoIO f = do
+    v <- newMVar M.empty
+    let f' x = do
+            m <- readMVar v
+            case M.lookup x m of
+                Nothing -> do let { r = f x }; modifyMVar_ v (return . M.insert x r); return r
+                Just r  -> return r
+    return f'
+
+memo :: (Ord a) => (a -> b) -> (a -> b)
+memo f = let f' = unsafePerformIO (memoIO f) in \x -> unsafePerformIO (f' x)
