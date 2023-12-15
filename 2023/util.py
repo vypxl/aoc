@@ -391,6 +391,40 @@ def find(S, neighbours, condition):
     return False
 
 
+def iterate_cyclic(step_f, state, target_steps, key=None):
+    """Apply step_f to state repeatedly until either target_steps is reached, or a cycle is found and redundant steps are skipped. Use key to specify how state is hashed.
+
+    Example:
+    ```py
+        iterate_cyclic(0, lambda x: (x + 1) % 4, 10, lambda x: str(x))
+    ```
+    This will run 6 instead of 10 steps, because a cycle is detected.
+
+    Warning: A wrong key function may lead to invalid cycles being found.
+    When no key function is given, it defaults to str(state), or hash(a.data.tobytes()) for numpy arrays.
+    """
+    mem = {}
+    i = 0
+
+    if key is None:
+        if isinstance(state, np.ndarray):
+            key = lambda x: hash(x.data.tobytes())
+        else:
+            key = str
+    while i < target_steps:
+        k = key(state)
+        if k in mem:
+            loop_start = mem[k]
+            cycle_len = i - loop_start
+            i = target_steps - ((target_steps - loop_start) % cycle_len)
+        mem[k] = i
+
+        state = step_f(state)
+        i += 1
+
+    return state
+
+
 def call(f):
     """Just call f()."""
     return f()
