@@ -110,6 +110,5 @@ def main():  # noqa
 if __name__ == "__main__":
     main()
 
-# Solution part 1:
-# Solution part 2:
-# Leaderboard:
+# Solution part 1: 401674
+# Solution part 2: 134906204068564
