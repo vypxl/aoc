@@ -7,3 +7,4 @@ dist-newstyle
 out
 lib
 .env
+*.in
