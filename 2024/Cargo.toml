@@ -1,0 +1,107 @@
+[package]
+name = "aoc_2024"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "Day1"
+path = "Day1.rs"
+
+[[bin]]
+name = "Day2"
+path = "Day2.rs"
+
+[[bin]]
+name = "Day3"
+path = "Day3.rs"
+
+[[bin]]
+name = "Day4"
+path = "Day4.rs"
+
+[[bin]]
+name = "Day5"
+path = "Day5.rs"
+
+[[bin]]
+name = "Day6"
+path = "Day6.rs"
+
+[[bin]]
+name = "Day7"
+path = "Day7.rs"
+
+[[bin]]
+name = "Day8"
+path = "Day8.rs"
+
+[[bin]]
+name = "Day9"
+path = "Day9.rs"
+
+[[bin]]
+name = "Day10"
+path = "Day10.rs"
+
+[[bin]]
+name = "Day11"
+path = "Day11.rs"
+
+[[bin]]
+name = "Day12"
+path = "Day12.rs"
+
+[[bin]]
+name = "Day13"
+path = "Day13.rs"
+
+[[bin]]
+name = "Day14"
+path = "Day14.rs"
+
+[[bin]]
+name = "Day15"
+path = "Day15.rs"
+
+[[bin]]
+name = "Day16"
+path = "Day16.rs"
+
+[[bin]]
+name = "Day17"
+path = "Day17.rs"
+
+[[bin]]
+name = "Day18"
+path = "Day18.rs"
+
+[[bin]]
+name = "Day19"
+path = "Day19.rs"
+
+[[bin]]
+name = "Day20"
+path = "Day20.rs"
+
+[[bin]]
+name = "Day21"
+path = "Day21.rs"
+
+[[bin]]
+name = "Day22"
+path = "Day22.rs"
+
+[[bin]]
+name = "Day23"
+path = "Day23.rs"
+
+[[bin]]
+name = "Day24"
+path = "Day24.rs"
+
+[[bin]]
+name = "Day25"
+path = "Day25.rs"
+
+[dependencies]
+

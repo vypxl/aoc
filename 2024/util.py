@@ -1,6 +1,7 @@
 """Provides various utilities used for solving AOC problems."""
 import functools
 from os.path import basename
+import sys
 import re
 import math  # pylint: disable=unused-import
 import itertools as it  # pylint: disable=unused-import
@@ -18,8 +19,10 @@ def get_day():
 
 
 def data(day=None):
-    """Get the input for the specified day or fallback on current day retrieved by get_day."""
-    return open(f"{day or get_day()}.in", encoding="utf-8").read()
+    """Get the input for the specified day or fallback to stdin."""
+    if day is None:
+        return sys.stdin.read()
+    return open(f"{day}.in", encoding="utf-8").read()
 
 
 def data_lines(day=None):

@@ -34,7 +34,7 @@ int main(int argc, char **argv) {
     s += (x + mask) ^ mask;
   }
 
-  printf("%d\n%d\n", s, p2);
+  printf("Part1: %d\nPart2: %d\n", s, p2);
 
   return 0;
 }

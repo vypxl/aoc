@@ -8,3 +8,5 @@ out
 lib
 .env
 *.in
+a.out
+target
