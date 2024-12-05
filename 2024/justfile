@@ -63,7 +63,7 @@ bench day=today:
   $bench_cmd
 
 watch day=today:
-  find . -maxdepth 1 -type f -name Day\*.\* | entr -rcs 'just day {{day}}'
+  find . -maxdepth 1 -type f -name Day\*.\* -or -name \*.in | entr -rcs 'just day {{day}}'
 
 _gen template day fname:
   cp "template.{{template}}" {{fname}}
