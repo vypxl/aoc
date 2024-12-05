@@ -37,6 +37,31 @@ day day=today:
     echo -n $p1 | wl-copy
     echo Copied \'$p1\'
   fi
+
+bench day=today:
+  #!/usr/bin/env bash
+  set -e
+
+  D=./Day{{day}}
+  I=./{{day}}.in
+
+  if [ -f $D.rs ]; then
+    cargo build --release --bin Day{{day}}
+    cmd=target/release/Day{{day}}
+  elif [ -f $D.c ]; then
+    gcc -std=c11 -O3 $D.c
+    cmd=./a.out
+  elif [ -f $D.cpp ]; then
+    g++ -std=c++23 -O3 $D.cpp
+    cmd=./a.out
+  else
+    cmd=$D.*
+  fi
+  
+  bench_cmd="hyperfine --warmup 20 --input $I $cmd"
+  echo λ "$bench_cmd"
+  $bench_cmd
+
 watch day=today:
   find . -maxdepth 1 -type f -name Day\*.\* | entr -rcs 'just day {{day}}'
 
