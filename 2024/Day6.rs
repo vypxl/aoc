@@ -3,30 +3,21 @@ use std::fmt::{self, Display};
 use std::io::{self, BufRead, BufReader};
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-enum Tile {
-    Free,
-    Obstacle,
-    Visited(u8),
-}
+struct Tile(u8);
+
+const FREE: Tile = Tile(0);
+const OBSTACLE: Tile = Tile(0x10);
 
 impl Display for Tile {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            Tile::Free => write!(f, " "),
-            Tile::Obstacle => write!(f, "#"),
-            Tile::Visited(which) => {
-                // write!(
-                //     f,
-                //     "{}",
-                //     [
-                //         "*", "╵", "╷", "│", "╴", "╯", "╮", "┤", "╶", "╰", "╭", "├", "─", "┴", "┬",
-                //         "┼",
-                //     ][*which as usize]
-                // )
-                let has_up = *which & Dir::Up as u8 != 0;
-                let has_down = *which & Dir::Down as u8 != 0;
-                let has_left = *which & Dir::Left as u8 != 0;
-                let has_right = *which & Dir::Right as u8 != 0;
+        match *self {
+            FREE => write!(f, " "),
+            OBSTACLE => write!(f, "#"),
+            Tile(which) => {
+                let has_up = which & Dir::Up as u8 != 0;
+                let has_down = which & Dir::Down as u8 != 0;
+                let has_left = which & Dir::Left as u8 != 0;
+                let has_right = which & Dir::Right as u8 != 0;
 
                 let has_horizontal = has_left || has_right;
                 let has_vertical = has_up || has_down;
@@ -77,7 +68,12 @@ impl Dir {
 }
 
 #[derive(Clone, Debug)]
-struct Grid(Vec<Vec<Tile>>);
+struct Grid {
+    width: usize,
+    height: usize,
+    inner: Vec<Tile>,
+}
+
 #[derive(Clone, Copy, PartialEq, Debug)]
 struct Pos {
     x: usize,
@@ -87,7 +83,7 @@ struct Pos {
 
 impl Display for Grid {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        for row in &self.0 {
+        for row in self.inner.chunks(self.width) {
             for tile in row {
                 write!(f, "{}", tile)?;
             }
@@ -104,25 +100,43 @@ impl Display for Pos {
 }
 
 impl Grid {
-    fn get(&self, pos: &Pos) -> Option<Tile> {
-        self.0
-            .get(pos.y)
-            .and_then(|row| row.get(pos.x).and_then(|tile| Some(*tile)))
-    }
+    fn from_vec2d(src: Vec<Vec<Tile>>) -> Self {
+        let height = src.len();
+        let width = src[0].len();
 
-    fn set(&mut self, pos: &Pos, val: Tile) {
-        self.0[pos.y][pos.x] = val;
-    }
+        let mut inner = Vec::with_capacity(width * height);
 
-    fn visit(&mut self, pos: &Pos) -> bool {
-        let v = self.get(pos).unwrap();
-        if let Tile::Visited(which) = v {
-            self.set(pos, Tile::Visited(which as u8 | pos.dir as u8));
-            return which & pos.dir as u8 != 0;
-        } else {
-            self.set(pos, Tile::Visited(pos.dir as u8));
-            return false;
+        for row in src {
+            inner.extend(row.into_iter());
         }
+
+        Self {
+            width,
+            height,
+            inner,
+        }
+    }
+
+    #[inline]
+    fn is_valid(&self, pos: &Pos) -> bool {
+        return pos.x < self.width && pos.y < self.height;
+    }
+
+    #[inline]
+    unsafe fn get_unchecked(&self, pos: &Pos) -> &Tile {
+        self.inner.get_unchecked(pos.y * self.width + pos.x)
+    }
+
+    #[inline]
+    unsafe fn set_unchecked(&mut self, pos: &Pos, val: Tile) {
+        let ptr = self.inner.get_unchecked_mut(pos.y * self.width + pos.x);
+        *ptr = val;
+    }
+
+    unsafe fn visit(&mut self, pos: &Pos) -> bool {
+        let v = *self.get_unchecked(pos);
+        self.set_unchecked(pos, Tile(v.0 | pos.dir as u8));
+        v.0 & pos.dir as u8 != 0
     }
 }
 
@@ -150,56 +164,57 @@ fn sim(grid: &mut Grid, p: Pos) -> (usize, bool) {
 
     let mut n_visits = 0;
 
-    loop {
-        if let Some(t) = grid.get(&pos) {
-            if t == Tile::Free {
-                n_visits += 1;
-            }
-
-            if grid.visit(&pos) {
-                return (n_visits, true);
-            }
-
-            while grid.get(&pos.step()) == Some(Tile::Obstacle) {
-                pos = pos.turn();
-            }
-
-            pos = pos.step()
-        } else {
-            break;
+    while grid.is_valid(&pos) {
+        let t = unsafe { grid.get_unchecked(&pos) };
+        if *t == FREE {
+            n_visits += 1;
         }
+
+        if unsafe { grid.visit(&pos) } {
+            return (n_visits, true);
+        }
+
+        while unsafe { *grid.get_unchecked(&pos.step()) } == OBSTACLE {
+            pos = pos.turn();
+        }
+
+        pos = pos.step()
     }
 
     (n_visits, false)
 }
 
-fn p1(g: Grid, p: Pos) -> usize {
-    let mut g = g;
+fn p1(mut g: Grid, p: Pos) -> usize {
     sim(&mut g, p).0
 }
 
-fn p2(g: Grid, p: Pos) -> usize {
+fn p2(mut grid: Grid, p: Pos) -> usize {
     let mut res = 0;
-    let mut grid = g.clone();
 
-    let _ = sim(&mut grid, p);
+    let mut pos = p;
+    let mut g2 = grid.clone();
+    
+    while grid.is_valid(&pos) {
+        let mut next = pos.step();
+        let mut next_tile = unsafe { *grid.get_unchecked(&next) };
+        
+        while next_tile == OBSTACLE {
+            pos = pos.turn();
+            next = pos.step();
+            next_tile = unsafe { *grid.get_unchecked(&next) };
+        }
 
-    for y in 0..g.0.len() {
-        for x in 0..g.0[y].len() {
-            if p.x == x && p.y == y {
-                continue;
-            }
-            if let Tile::Visited(_) = grid.0[y][x] {
-                // check this tile for a possible obstacle position
-                let mut g2 = g.clone();
-                let p2 = Pos::new(x, y, Dir::Up);
-                g2.set(&p2, Tile::Obstacle);
+        if next_tile == FREE {
+            g2.clone_from(&grid);
+            unsafe { g2.set_unchecked(&next, OBSTACLE) };
 
-                if sim(&mut g2, p).1 {
-                    res += 1;
-                }
+            if sim(&mut g2, pos).1 {
+                res += 1;
             }
         }
+
+        unsafe { grid.visit(&pos) };
+        pos = next;
     }
 
     res
@@ -219,20 +234,20 @@ fn main() -> Result<(), Box<dyn Error>> {
             .bytes()
             .enumerate()
             .map(|(x, c)| match c {
-                b'.' => Tile::Free,
-                b'#' => Tile::Obstacle,
+                b'.' => FREE,
+                b'#' => OBSTACLE,
                 b'^' => {
                     pos = Pos::new(x, y, Dir::Up);
-                    Tile::Free
+                    FREE
                 }
-                _ => Tile::Free,
+                _ => FREE,
             })
             .collect();
         grid.push(ints);
         y += 1;
     }
 
-    let grid = Grid(grid);
+    let grid = Grid::from_vec2d(grid);
 
     println!("Part1: {}", p1(grid.clone(), pos));
     println!("Part2: {}", p2(grid, pos));
