@@ -10,3 +10,5 @@ lib
 *.in
 a.out
 target
+flamegraph.svg
+perf*
